@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-promptforge-ai",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Generate optimized prompts for ChatGPT, Claude, Gemini, Grok and other LLMs.",
   "keywords": [
     "n8n-community-node-package",

@@ -1,0 +1,42 @@
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      # If you set up a Trusted Publisher on npmjs.com (recommended, no token needed),
+      # this step authenticates automatically via OIDC.
+      # If you use a Granular Access Token instead, add NPM_TOKEN as a repo secret
+      # and uncomment the env line below.
+      - name: Publish to npm
+        run: npm publish --provenance --access public
+        # env:
+        #   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

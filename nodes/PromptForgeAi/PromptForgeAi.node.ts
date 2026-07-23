@@ -3,13 +3,16 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
+	NodeConnectionTypes,
+	NodeApiError,
+	JsonObject,
 } from 'n8n-workflow';
 
 export class PromptForgeAi implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'PromptForge AI',
 		name: 'promptForgeAi',
-		icon: 'file:promptforgeai.svg',
+		icon: { light: 'file:promptforgeai.light.svg', dark: 'file:promptforgeai.dark.svg' },
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["task"]}}',
@@ -17,8 +20,9 @@ export class PromptForgeAi implements INodeType {
 		defaults: {
 			name: 'PromptForge AI',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		usableAsTool: true,
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		codex: {
 			categories: ['AI'],
 			subcategories: {
@@ -163,7 +167,7 @@ export class PromptForgeAi implements INodeType {
 					});
 					continue;
 				}
-				throw error;
+				throw new NodeApiError(this.getNode(), error as JsonObject);
 			}
 		}
 
